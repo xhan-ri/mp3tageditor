@@ -32,7 +32,7 @@ public class Engine {
 	public void test() {
 		File[] fileArr = fileSystem.getFiles();
 		for (File file : fileArr) {
-			System.out.println(file.getName());
+			logger.info(file.getAbsolutePath());
 		}
 	}
 
