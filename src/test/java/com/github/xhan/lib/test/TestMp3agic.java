@@ -1,4 +1,4 @@
-package org.xiaofeng.testmp3agic;
+package com.github.xhan.lib.test;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -14,7 +14,7 @@ import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.NotSupportedException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 
-public class TestFly {
+public class TestMp3agic {
 
 	@Test
 	public void readChinese() throws UnsupportedTagException, InvalidDataException, IOException, NotSupportedException {

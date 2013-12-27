@@ -5,25 +5,40 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import javax.annotation.Resource;
 
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
+
+import com.github.xhan.mp3tageditor.os.filesystem.IFileSystem;
+@Component
 public class Engine {
 
 	private Logger logger = Logger.getLogger(Engine.class);
-	private List<File> files;
-	public Engine() {
-		files = new LinkedList<>();
+	private List<File> fileList;
+	
+	@Resource(name="fileSystem") private IFileSystem fileSystem;
+	protected Engine() {
+//		fileSystem = (IFileSystem)springContext.getBean("fileSystem");
+		fileList = new LinkedList<>();
 	}
 	
-	public Engine(File...files) {
-		this();
-		this.files.addAll(Arrays.asList(files));
+	public List<File> addFiles(File... files) {
+		fileList.addAll(Arrays.asList(files));
 		normalizeFiles();
+		return fileList;
+	}
+	
+	public void test() {
+		File[] fileArr = fileSystem.getFiles();
+		for (File file : fileArr) {
+			System.out.println(file.getName());
+		}
 	}
 
 	private void normalizeFiles() {
 		List<File> badFiles = new LinkedList<>();
-		for (File file : files) {
+		for (File file : fileList) {
 			try {
 				normalizeFile(file);
 			} catch (Exception e) {
@@ -34,7 +49,7 @@ public class Engine {
 		
 		// clear out bad files.
 		for (File file : badFiles) {
-			files.remove(file);
+			fileList.remove(file);
 		}
 		
 	}
