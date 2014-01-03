@@ -8,5 +8,5 @@
 		<context:component-scan base-package="com.github.xhan.mp3tageditor"/>
 		<context:annotation-config />
 		<bean id="engine" class="com.github.xhan.mp3tageditor.Engine" />
-		<bean id="fileSystem" name="fileSystem" class="com.github.xhan.mp3tageditor.os.filesystem.MacFileSystem"></bean>
+		<bean id="fileSystem" name="fileSystem" class="com.github.xhan.mp3tageditor.os.filesystem.MacFileSystem" />
 </beans>

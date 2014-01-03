@@ -65,6 +65,12 @@
 			<artifactId>spring-test</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>${commons.version}</version>
+		</dependency>
 	</dependencies>
 	<repositories>
 		<repository>
@@ -81,5 +87,6 @@
 	<properties>
 		<jdk.compiler.version>1.7</jdk.compiler.version>
 		<spring.version>4.0.0.RELEASE</spring.version>
+		<commons.version>2.6</commons.version>
 	</properties>
 </project>

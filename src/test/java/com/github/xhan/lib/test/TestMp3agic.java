@@ -17,7 +17,7 @@ public class TestMp3agic {
 	private static final Logger logger = Logger.getLogger(TestMp3agic.class);
 	@Test
 	public void readChinese() throws UnsupportedTagException, InvalidDataException, IOException, NotSupportedException {
-		Mp3File file = new Mp3File("/Users/xhan/Desktop/sq001.mp3");
+		Mp3File file = new Mp3File("/Users/xhan/Desktop/dnjz.mp3");
 		int id3ver = 0;
 		id3ver = file.hasId3v1Tag() ? 1 : file.hasId3v2Tag() ? 2 : 0;
 		String albumName = null;
@@ -33,14 +33,14 @@ public class TestMp3agic {
 				break;
 		}
 		logger.info("Untouched album name: " + albumName);
-		String encodedName = reEncoding(albumName, Charset.forName("ISO-8859-1"), Charset.forName("GB18030"));
+		String encodedName = reEncoding(albumName, Charset.forName("ISO-8859-1"), Charset.forName("UTF-8"));
 		logger.info("Re-encoded album name: " + encodedName);
 		ID3v24Tag tag = new ID3v24Tag();
 		tag.setEncoder("UTF-8");
 		tag.setAlbum(encodedName);
 		file.removeId3v1Tag();
 		file.setId3v2Tag(tag);
-		file.save("/Users/xhan/Desktop/sq002.mp3");
+		file.save("/Users/xhan/Desktop/dnjz-2.mp3");
 	}
 	
 	
