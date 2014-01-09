@@ -6,7 +6,7 @@ import java.nio.charset.Charset;
 import java.util.UUID;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.springframework.core.style.ToStringCreator;
+import org.apache.log4j.Logger;
 import org.springframework.util.StringUtils;
 
 import com.mpatric.mp3agic.ID3v1;
@@ -14,14 +14,17 @@ import com.mpatric.mp3agic.ID3v2;
 import com.mpatric.mp3agic.ID3v24Tag;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
+import com.mpatric.mp3agic.NotSupportedException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 
 public class MusicFile {
 
-	UUID id;
+	private static final Logger logger = Logger.getLogger(MusicFile.class);
+	String id;
 	Mp3File mp3File;
 	ID3v24Tag newTag;
 	Charset sourceEncoding;
+	File osFile;
 	private static final Charset targetEncoding = Charset.forName("UTF-8");
 	public MusicFile(File file) {
 		if (!isValid(file)) {
@@ -32,7 +35,8 @@ public class MusicFile {
 		} catch (UnsupportedTagException | InvalidDataException | IOException e) {
 			throw new RuntimeException(e);
 		}
-		id = UUID.randomUUID();
+		osFile = file;
+		id = UUID.randomUUID().toString();
 		sourceEncoding = Charset.defaultCharset();
 		newTag = new ID3v24Tag();
 		readTag();
@@ -130,25 +134,32 @@ public class MusicFile {
 		this.newTag = newTag;
 	}
 	
-	public UUID getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(UUID id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
 	public void save() {
 		mp3File.removeId3v1Tag();
 		mp3File.setId3v2Tag(newTag);
+		try {
+			mp3File.save(osFile.getAbsolutePath());
+		} catch (NotSupportedException | IOException e) {
+			String msg = "Cannot write music file: " + osFile.getAbsolutePath();
+			logger.error(msg);
+		}
+		
 	}
 
 	private String transEncoding(String input) {
 		if (StringUtils.isEmpty(input)) {
 			return "";
 		}
-		byte[] buffer = input.getBytes(sourceEncoding);
-		return new String(buffer, targetEncoding);
+		byte[] buffer = input.getBytes(Charset.forName("ISO-8859-1"));
+		return new String(buffer, sourceEncoding);
 	}
 
 	@Override

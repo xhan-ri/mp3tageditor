@@ -16,6 +16,7 @@ import com.github.xhan.mp3tageditor.Engine;
 import com.github.xhan.mp3tageditor.EngineLoader;
 import com.github.xhan.mp3tageditor.MusicFile;
 import com.github.xhan.mp3tageditor.editor.Id3Tagv2Editor;
+import com.github.xhan.mp3tageditor.editor.TrackNumberEditorGenerator;
 import com.github.xhan.mp3tageditor.os.filesystem.IFileSystem;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -39,10 +40,13 @@ public class EngineTest {
 			logger.info(file.getNewTag().getAlbum());
 		}
 		engine.addGlobalEditor(new Id3Tagv2Editor<String>("Album", "test album", String.class));
+		engine.setTrackNumberGenerator(new TrackNumberEditorGenerator(0, 2, 4));
+		
 		engine.runEditors();
 		logger.info("after run editors");
 		for (MusicFile file : files) {
 			logger.info(file.getNewTag().getAlbum());
+			logger.info(file.getNewTag().getTrack());
 		}
 	}
 }
